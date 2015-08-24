@@ -4,7 +4,7 @@ var Card = (function () { //begin IIFE...
 	function Card(id) {  //Card is also IIFE's internal name
 		if (!isValidID(id))
 			return null;
-		this.id=id,  //personal property
+		this.id=id //personal property
 	};
 //------------------
 // Private resources (internal use only)
@@ -18,8 +18,9 @@ var Card = (function () { //begin IIFE...
 
 	var rankNames = ['','Ace','Two','Three','Four','Five','Six','Seven',
 	'Eight','Nine','Ten','Jack','Queen','King'];
-
 	var suitNames = ['','Hearts','Diamonds','Spades','Clubs'];
+	var rankAbbrs = ['','A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+	var suitAbbrs = ['','H','D','S','C'];
 
 //-----------------------
 // Class Methods
@@ -51,27 +52,37 @@ var Card = (function () { //begin IIFE...
 	Card.prototype.name = function() { //--> string, NaN
 		var rankVal = this.rank();
 		var suitVal = this.suit();
-		return rankVal && suitVal &&
-			(rankNames[rankVal]+' of '+suitNames[suitVal]);
+		return (rankNames[rankVal]+' of '+suitNames[suitVal]);
 	};
-
-
 
 	// Use factory to create full set:
 	Card.fullSet = [];
 	for (var id=0; id<52; ++id) {
-		Card.fullSet[id] = new Card(id);
+		Card.fullSet.push(new Card(id));
 	}
 
-	return Card;  //return Ctor
-})(); //end IIFE definition and do it now!
+	return Card;  //return factory function, product of IIFE's work
 
+})();
 
 // Export as NPM-style module
 if (typeof module !== "undefined") {
-	module.exports = Card;
+  module.exports = Card;
 }
 
-
-
+/** Tests of the full deck, printing all properties and executing all functions of each card:
+var cards = Card.fullSet.slice();
+cards.forEach(function (e) {
+  console.log(e);
+  for (key in e) {
+    if (e[key] instanceof Function) {
+      console.log(e[key]());
+    } else {
+      console.log(e[key]);
+    }
+  }
+  console.log();
+})
+// End testing code
+*/
 
